@@ -1,9 +1,8 @@
 import { combineReducers } from "redux"
-import { loginSuccess, logout } from "./slices/authSlice"
+import authSlice from "./slices/authSlice"
 
 const rootReducer = combineReducers({
-    loginSuccess: loginSuccess,
-    logout: logout
+    auth: authSlice
 })
 
 export default rootReducer

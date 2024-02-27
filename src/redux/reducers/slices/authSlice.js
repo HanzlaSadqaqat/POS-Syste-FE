@@ -14,7 +14,6 @@ const authSlice = createSlice({
     reducers: {
         loginSuccess(state, action) {
             return {
-                ...state,
                 email: action.payload.email,
                 isLogin: action.payload.isLogin,
                 accessToken: action.payload.accessToken
@@ -22,7 +21,6 @@ const authSlice = createSlice({
         },
         logout(state) {
             return {
-                ...state,
                 email: '',
                 isLogin: false,
                 accessToken: ''

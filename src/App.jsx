@@ -1,21 +1,19 @@
 
-import './App.css'
 import { useDispatch, useSelector } from 'react-redux'
-import { loginSuccess } from './redux/reducers/slices/authSlice'
+import { BrowserRouter as Router, useRoutes } from 'react-router-dom';
+import Routes from './routes/Routes';
 
 const AppRouter = () => {
-  const { isLogin } = useSelector(state => state.auth)
+  const isLogin = useSelector((state) => state.auth.isLogin);
+
   console.log(isLogin)
-  return (
-    <>appRouter</>
-  )
+  return useRoutes(Routes(isLogin))
 }
 function App() {
   return (
-    <>
+    <Router>
       <AppRouter />
-      Hanzla
-    </>
+    </Router>
   )
 }
 
