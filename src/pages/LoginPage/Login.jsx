@@ -38,7 +38,7 @@ const Login = () => {
         };
         dispatch(loginSuccess(config));
         localStorage.setItem("accessToken", response.data.user.accessToken);
-        navigate("/admin");
+        // navigate("/admin");
       } else if (!email & !password) {
         messageApi.open({
           type: "error",

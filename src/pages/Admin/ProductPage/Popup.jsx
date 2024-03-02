@@ -37,7 +37,11 @@ export default function Popup(props) {
   const getCategories = async () => {
     try {
       const accessToken = localStorage.getItem("accessToken");
-      const response = await axios.get("/category");
+      const response = await axios.get("/category", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
       setCategories(
         response.data.data.map((item) => ({
           label: item.name,
@@ -51,7 +55,6 @@ export default function Popup(props) {
 
   const handleAddProduct = async () => {
     try {
-      console.log("hello i");
       const accessToken = localStorage.getItem("accessToken");
       if (!name || !description || !quantity || !price || !selectCtg) {
         return messageApi.open({
@@ -81,8 +84,6 @@ export default function Popup(props) {
       setQuantity(null);
       setPrice(null);
       setSelectCtg(null);
-
-      console.log(response.data);
     } catch (error) {
       console.log(error);
     }

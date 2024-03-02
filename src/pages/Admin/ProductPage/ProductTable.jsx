@@ -14,7 +14,6 @@ export default function ProductTable(props) {
   const [quantity, setQuantity] = useState("");
 
   useEffect(() => {
-    console.log("prop", props);
     setProducts(props.product);
   }, [props.product]);
 
@@ -60,46 +59,46 @@ export default function ProductTable(props) {
 
   return (
     <div>
-      <div class="overflow-x-auto w-full border-1 shadow-sm rounded-xl">
-        <table class="w-full divide-y divide-gray-200">
-          <thead class="bg-gray-100">
+      <div className="overflow-x-auto w-full border-1 shadow-sm rounded-xl">
+        <table className="w-full divide-y divide-gray-200">
+          <thead className="bg-gray-100">
             <tr>
               <th
                 scope="col"
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
                 Product Name
               </th>
               <th
                 scope="col"
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
                 Description
               </th>
               <th
                 scope="col"
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
                 Price
               </th>
               <th
                 scope="col"
-                class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
                 Quantity
               </th>
-              <th scope="col" class="relative px-6 py-3">
-                <span class="sr-only">Edit</span>
+              <th scope="col" className="relative px-6 py-3">
+                <span className="sr-only">Edit</span>
               </th>
             </tr>
           </thead>
-          <tbody class="bg-white divide-y w-full divide-gray-200">
+          <tbody className="bg-white divide-y w-full divide-gray-200">
             {products.length > 0 ? (
               products.map((item) => (
                 <tr className=" hover:bg-gray-50">
-                  <td class=" w-48 px-6 py-4 whitespace-nowrap">
-                    <div class="flex items-center">
-                      <div class="ml-4">
+                  <td className=" w-48 px-6 py-4 whitespace-nowrap">
+                    <div className="flex items-center">
+                      <div className="ml-4">
                         {updateId && updateId === item._id ? (
                           <>
                             <div>
@@ -112,7 +111,7 @@ export default function ProductTable(props) {
                           </>
                         ) : (
                           <>
-                            <div class="text-sm font-medium text-gray-900 flex flex-col">
+                            <div className="text-sm font-medium text-gray-900 flex flex-col">
                               {item.name}
                               <span className="text-[10px] text-gray-400">
                                 {item.category}
@@ -123,7 +122,7 @@ export default function ProductTable(props) {
                       </div>
                     </div>
                   </td>
-                  <td class="px-6 py-4  ">
+                  <td className="px-6 py-4  ">
                     {updateId && updateId === item._id ? (
                       <>
                         <div>
@@ -136,13 +135,13 @@ export default function ProductTable(props) {
                       </>
                     ) : (
                       <>
-                        <div class="text-sm text-gray-900  ">
+                        <div className="text-sm text-gray-900  ">
                           {item.description}
                         </div>
                       </>
                     )}
                   </td>
-                  <td class="px-6 py-4  ">
+                  <td className="px-6 py-4  ">
                     {updateId && updateId === item._id ? (
                       <>
                         <div>
@@ -156,13 +155,13 @@ export default function ProductTable(props) {
                       </>
                     ) : (
                       <>
-                        <div class="text-sm text-gray-900  ">
+                        <div className="text-sm text-gray-900  ">
                           $ {item.price}
                         </div>
                       </>
                     )}
                   </td>
-                  <td class="px-6 py-4  ">
+                  <td className="px-6 py-4  ">
                     {updateId && updateId === item._id ? (
                       <>
                         <div>
@@ -176,14 +175,14 @@ export default function ProductTable(props) {
                       </>
                     ) : (
                       <>
-                        <div class="text-sm text-gray-900  ">
+                        <div className="text-sm text-gray-900  ">
                           {item.quantity}
                         </div>{" "}
                       </>
                     )}
                   </td>
 
-                  <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium  flex gap-2">
+                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium  flex gap-2">
                     {updateId && updateId === item._id ? (
                       <>
                         <Button
@@ -199,7 +198,7 @@ export default function ProductTable(props) {
                       </>
                     ) : (
                       <>
-                        <span class="text-[20px] cursor-pointer">
+                        <span className="text-[20px] cursor-pointer">
                           <FaRegEdit onClick={() => handleEdit(item)} />
                         </span>
                         <span className="cursor-pointer text-[22px]">

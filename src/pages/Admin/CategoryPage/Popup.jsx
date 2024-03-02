@@ -32,7 +32,6 @@ export default function Popup(props) {
     }
     const accessToken = localStorage.getItem("accessToken");
     try {
-      console.log(accessToken);
       const response = await axios.post(
         "/category",
         {
@@ -45,8 +44,6 @@ export default function Popup(props) {
           },
         }
       );
-      props.setIsAdd(response.data);
-      console.log(response);
     } catch (error) {
       console.log(error.response.data);
       messageApi.open({

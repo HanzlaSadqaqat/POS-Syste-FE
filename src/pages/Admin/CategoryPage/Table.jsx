@@ -7,8 +7,6 @@ export default function TableTab(props) {
   const [categories, setCategories] = useState([]);
   const [update, setUpdate] = useState(false);
   useEffect(() => {
-    console.log("jadskjcaklsldcjaklsldcjl", props.categories);
-
     const data = props.categories.map((item) => ({
       //   _id: item._id,
       name: item.name,
@@ -46,9 +44,7 @@ export default function TableTab(props) {
       console.log(error);
     }
   };
-  useEffect(() => {
-    console.log(update);
-  }, [update]);
+  useEffect(() => {}, [update]);
 
   const onUpdateClick = () => {};
 
