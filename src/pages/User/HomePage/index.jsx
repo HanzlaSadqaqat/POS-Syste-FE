@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import UserSidebar from "./UserSidebar";
 import axios from "axios";
+import OrdersProcess from "./OrdersProcess";
 
 export default function HomePage() {
   const [categories, setCategories] = useState([]);
@@ -52,7 +53,7 @@ export default function HomePage() {
         {/* <div className="col-span-1 bg-gray-200">Column 1</div> */}
         <div className="col-span-1 ">
           <UserSidebar
-            body={<Body />}
+            body={<OrdersProcess products={products} />}
             categories={categories}
             getCategoryId={getCategoryId}
           />
@@ -61,16 +62,3 @@ export default function HomePage() {
     </div>
   );
 }
-
-const Body = () => {
-  return (
-    <>
-      <div className="grid grid-row-2 grid-flow-col ">
-        {/* PRODUCTS SECTION */}
-        <div className=" PRODUCTS col-span-4 bg-blue-200 h-screen"></div>
-        {/* CALCULATE ORDER SECTION */}
-        <div className="col-span-2 bg-gray-400">Column 3</div>
-      </div>
-    </>
-  );
-};
