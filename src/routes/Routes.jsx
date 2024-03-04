@@ -4,7 +4,7 @@ import Pannel from "../pages/Admin/Index";
 import Product from "../pages/Admin/ProductPage";
 import User from "../pages/Admin/UserPage";
 import Login from "../pages/LoginPage/Login";
-import HomePage from "../pages/User/HomePage";
+import HomePage from "../pages/User/UserPage";
 
 const Routes = (props) => {
   console.log("props", props);
@@ -17,7 +17,7 @@ const Routes = (props) => {
     } else {
       return [
         { path: "/user", element: <HomePage /> },
-        { path: "*", element: <Pannel /> },
+        { path: "*", element: <HomePage /> },
       ];
     }
   } else {

@@ -1,20 +1,10 @@
 import React, { useEffect, useState } from "react";
-import {
-  AppstoreOutlined,
-  BarChartOutlined,
-  CloudOutlined,
-  ShopOutlined,
-  TeamOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from "@ant-design/icons";
-import logo from "../../../assets/images/logo.png";
-import { Layout, Menu, theme } from "antd";
-import { MdLogout } from "react-icons/md";
+
+import logo from "../../../../assets/images/logo.png";
+import { Layout, Menu } from "antd";
 import { TbLogout } from "react-icons/tb";
 import { useDispatch } from "react-redux";
-import { logout } from "../../../redux/reducers/slices/authSlice";
+import { logout } from "../../../../redux/reducers/slices/authSlice";
 const { Header, Content, Footer, Sider } = Layout;
 
 const UserSidebar = (props) => {

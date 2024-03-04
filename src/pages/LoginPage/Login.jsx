@@ -3,7 +3,6 @@ import { Button, Form, Input, Radio } from "antd";
 import logo from "../../assets/images/logo.png";
 import axios from "axios";
 import { message } from "antd";
-import useMessage from "antd/es/message/useMessage";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../../redux/reducers/slices/authSlice";
@@ -24,7 +23,7 @@ const Login = () => {
         const response = await axios.post("/auth/login", {
           email,
           password,
-          role: formLayout,
+          // role: formLayout,
         });
         messageApi.open({
           type: "error",
@@ -38,7 +37,11 @@ const Login = () => {
         };
         dispatch(loginSuccess(config));
         localStorage.setItem("accessToken", response.data.user.accessToken);
-        // navigate("/admin");
+        if (config.role === "USER") {
+          navigate("/user");
+        } else if (config.role === "ADMIN") {
+          navigate("/admin");
+        }
       } else if (!email & !password) {
         messageApi.open({
           type: "error",
@@ -51,7 +54,11 @@ const Login = () => {
         });
       }
     } catch (error) {
-      messageApi.open({ type: "error", content: error.response.data.message });
+      console.log(error);
+      messageApi.open({
+        type: "error",
+        content: error.response.data.error.error,
+      });
     }
   };
 

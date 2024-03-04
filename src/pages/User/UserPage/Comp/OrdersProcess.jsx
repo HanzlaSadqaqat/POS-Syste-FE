@@ -36,18 +36,28 @@ export default function OrdersProcess(props) {
   }, []);
 
   useEffect(() => {
-    if (props.products) {
-      const disable = props.products.filter((item) => {
+    selectCategory();
+  }, [props.categoryId]);
+  const selectCategory = async () => {
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      const response = await axios.get(`/product/${props.categoryId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      const data = response.data.data;
+      const disable = data.filter((item) => {
         if (item.quantity <= 0) {
           return item._id;
         }
       });
       setDisableKey(disable.map((item) => item._id));
-      setProducts(props.products);
-    } else {
-      setProducts([]);
+      setProducts(data);
+    } catch (error) {
+      console.log(error);
     }
-  }, [props.products]);
+  };
   const getAllProducts = async () => {
     try {
       const accessToken = localStorage.getItem("accessToken");
@@ -105,6 +115,7 @@ export default function OrdersProcess(props) {
       console.log(findItem);
       if (findItem.quantity < item.quantity) {
         alert(`${findItem.name} is only ${findItem.quantity} remains`);
+        return;
       }
       return {
         productId: item._id,
@@ -127,7 +138,7 @@ export default function OrdersProcess(props) {
           },
         }
       );
-      console.log(response);
+      handleReset();
     } catch (error) {
       console.log(error);
     }
@@ -137,6 +148,7 @@ export default function OrdersProcess(props) {
     setSelectedItems([]);
     setSelectId([]);
     setTotal([]);
+    selectCategory();
   };
 
   return (
@@ -150,8 +162,7 @@ export default function OrdersProcess(props) {
               radius={"none"}
               disabledKeys={disableKey}
               selectionMode="multiple"
-              // defaultSelectedKeys={["2", "3"]}
-
+              selectedKeys={selectId}
               onSelectionChange={(e) => setSelectId([...e])}
               // aria-label="Example static collection table"
             >

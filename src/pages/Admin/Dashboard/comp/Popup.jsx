@@ -50,11 +50,13 @@ export default function Popup(props) {
                       <TableColumn>Price</TableColumn>
                     </TableHeader>
                     <TableBody>
-                      <TableRow key="1">
-                        <TableCell>Tony Reichert</TableCell>
-                        <TableCell>CEO</TableCell>
-                        <TableCell>Active</TableCell>
-                      </TableRow>
+                      {order.orders.map((item) => (
+                        <TableRow key={item._id}>
+                          <TableCell>{item.name}</TableCell>
+                          <TableCell>{item.quantity}</TableCell>
+                          <TableCell>{item.price}</TableCell>
+                        </TableRow>
+                      ))}
                     </TableBody>
                   </Table>
                 </>

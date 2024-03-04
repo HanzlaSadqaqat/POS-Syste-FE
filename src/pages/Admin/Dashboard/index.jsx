@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../../../componenets/Sidebar/Sidebar";
-import DashboardTable from "./DashboardTable";
 import Card from "../../../componenets/Card/Card";
 import { AiOutlineRise } from "react-icons/ai";
 import { MdOutlineAttachMoney, MdOutlineCalendarToday } from "react-icons/md";
 import { TbClock24, TbTruckDelivery } from "react-icons/tb";
 import axios from "axios";
+import DashboardTable from "./comp/DashboardTable";
 
 export default function Dashboard() {
   const [changeTab, setChangeTab] = useState("1");
@@ -13,10 +13,13 @@ export default function Dashboard() {
   const [todaySale, setTodaySale] = useState(0);
   const [todayOrders, setTodayOrders] = useState([]);
   const [previousDay, setPrviousDay] = useState({ sale: 0, order: 0 });
-
-  // const handleChangeTab = (val) => {
-  //   setChangeTab(val);
-  // };
+  const [currentPage, setCurrentPage] = useState("1");
+  const getCurrentpage = (val) => {
+    setCurrentPage(val);
+  };
+  useEffect(() => {
+    getOrdersDetail();
+  }, [currentPage]);
 
   useEffect(() => {
     getOrdersDetail();
@@ -24,7 +27,7 @@ export default function Dashboard() {
   const getOrdersDetail = async () => {
     try {
       const accessToken = localStorage.getItem("accessToken");
-      const response = await axios.get("/order", {
+      const response = await axios.get(`/order?&page=${currentPage}`, {
         headers: {
           Authorization: `Bearer ${accessToken}`,
         },
@@ -52,7 +55,7 @@ export default function Dashboard() {
       setTodayOrders(today.length);
       const sale = today.reduce((acc, cur) => acc + cur.totalPrice, 0);
       setTodaySale(`${sale}`);
-      setOrders(data);
+      setOrders(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -102,7 +105,7 @@ export default function Dashboard() {
           />
         </div>
         <div className="w-5/6">
-          <DashboardTable orders={orders} />
+          <DashboardTable getPage={getCurrentpage} orders={orders} />
         </div>
       </div>
     </>

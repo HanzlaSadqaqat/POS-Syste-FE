@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import UserSidebar from "./UserSidebar";
+import UserSidebar from "./Comp/UserSidebar";
 import axios from "axios";
-import OrdersProcess from "./OrdersProcess";
+import OrdersProcess from "./Comp/OrdersProcess";
 
 export default function HomePage() {
   const [categories, setCategories] = useState([]);
@@ -13,9 +13,6 @@ export default function HomePage() {
   const getCategoryId = (val) => {
     setCategoryId(val);
   };
-  useEffect(() => {
-    getProducts();
-  }, [categoryId]);
 
   const getCategories = async () => {
     try {
@@ -32,28 +29,13 @@ export default function HomePage() {
     }
   };
 
-  const getProducts = async () => {
-    try {
-      const accessToken = localStorage.getItem("accessToken");
-      console.log(categoryId);
-      const response = await axios.get(`product/${categoryId}`, {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      setProducts(response.data.data);
-      console.log(response.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
   return (
     <div>
       <div className="grid grid-row-2 grid-flow-col h-screen">
         {/* <div className="col-span-1 bg-gray-200">Column 1</div> */}
         <div className="col-span-1 ">
           <UserSidebar
-            body={<OrdersProcess products={products} />}
+            body={<OrdersProcess categoryId={categoryId} />}
             categories={categories}
             getCategoryId={getCategoryId}
           />
