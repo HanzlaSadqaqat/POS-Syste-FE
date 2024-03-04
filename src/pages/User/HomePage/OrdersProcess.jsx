@@ -9,6 +9,9 @@ import {
   Chip,
   Input,
 } from "@nextui-org/react";
+import { IoIosAddCircleOutline } from "react-icons/io";
+import { BiReset } from "react-icons/bi";
+
 import {
   Card,
   CardHeader,
@@ -28,10 +31,10 @@ export default function OrdersProcess(props) {
   const [selectedItems, setSelectedItems] = useState([]);
   const [total, setTotal] = useState("0");
   const [disableKey, setDisableKey] = useState([]);
-  const [max, setMax] = useState();
   useEffect(() => {
     getAllProducts();
   }, []);
+
   useEffect(() => {
     if (props.products) {
       const disable = props.products.filter((item) => {
@@ -130,6 +133,12 @@ export default function OrdersProcess(props) {
     }
   };
 
+  const handleReset = () => {
+    setSelectedItems([]);
+    setSelectId([]);
+    setTotal([]);
+  };
+
   return (
     <>
       <div className="grid grid-row-2 grid-flow-col ">
@@ -142,6 +151,7 @@ export default function OrdersProcess(props) {
               disabledKeys={disableKey}
               selectionMode="multiple"
               // defaultSelectedKeys={["2", "3"]}
+
               onSelectionChange={(e) => setSelectId([...e])}
               // aria-label="Example static collection table"
             >
@@ -177,12 +187,22 @@ export default function OrdersProcess(props) {
                 <CardHeader className="flex gap-3" radius="sm">
                   <div className="flex justify-between w-full items-center">
                     <p className="text-[32px]">Create Order</p>
-                    <Button
-                      className="bg-blue-500 text-white font-bold h-14"
-                      onClick={handleCreateOrder}
-                    >
-                      Create
-                    </Button>
+                    <span className="flex gap-2">
+                      <Button
+                        className="bg-yellow-400  text-white font-bold h-14 flex justify-center items-center gap-1"
+                        onClick={handleReset}
+                      >
+                        <BiReset />
+                        Reset
+                      </Button>
+                      <Button
+                        className="bg-blue-500 text-white font-bold h-14 flex justify-center items-center gap-1"
+                        onClick={handleCreateOrder}
+                      >
+                        <IoIosAddCircleOutline className="font-bold" />
+                        Create
+                      </Button>
+                    </span>
                   </div>
                 </CardHeader>
                 <Divider />

@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Space, Table, Tag } from "antd";
-import { FaRegEdit } from "react-icons/fa";
+import { FaArrowAltCircleRight, FaRegEdit } from "react-icons/fa";
 import { MdOutlineDelete } from "react-icons/md";
+import Popup from "./Popup";
 const columns = [
   {
     title: "Name",
@@ -73,7 +74,14 @@ const data = [
     tags: ["cool", "teacher"],
   },
 ];
-const DashboardTable = () => {
+const DashboardTable = (props) => {
+  const [orders, setOrders] = useState([]);
+  const [selectIndex, setSelectIndex] = useState(false);
+  useEffect(() => {
+    console.log(props.orders);
+    setOrders(props.orders);
+  });
+
   return (
     <>
       {" "}
@@ -81,7 +89,7 @@ const DashboardTable = () => {
         Orders List
       </div>
       <div className="overflow-x-auto border-1 shadow-sm rounded-xl">
-        <table className="min-w-full divide-y divide-gray-200 ">
+        <table className="min-w-full divide-y divide-gray-200 w-full">
           <thead className="bg-gray-50">
             <tr>
               <th
@@ -94,86 +102,58 @@ const DashboardTable = () => {
                 scope="col"
                 className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
               >
-                Description
+                Report
               </th>
-              <th scope="col" className="relative px-6 py-3">
-                <span className="sr-only">Edit</span>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Date
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+              >
+                Total Price
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {/* {categories.length > 0 ? (
-            categories.map((item) => ( */}
-            <tr className="hover:bg-gray-50">
-              <td className="  overflow-hidden px-6 py-4 whitespace-nowrap ">
-                <div className="flex w-48 items-center">
-                  <div className="ml-4">
-                    <div className="text-sm font-medium text-gray-900">
-                      {/* {update && update === item._id ? (
-                          <div>
-                            <Input
-                              defaultValue={name}
-                              onChange={(e) => setName(e.target.value)}
-                              value={name}
-                            />
+          <tbody className="bg-white  divide-gray-200 w-full">
+            {orders.map((order, index) => (
+              <>
+                <tr className="hover:bg-gray-50 border-b">
+                  <>
+                    <td className="  overflow-hidden px-6 py-4 whitespace-nowrap ">
+                      <div className="flex w-48 items-center">
+                        <div className="">
+                          <div className="text-sm font-medium text-gray-900">
+                            <>
+                              <div className="text-sm  text-gray-900 flex ">
+                                {order._id}
+                                <span></span>
+                              </div>
+                            </>
                           </div>
-                        ) : ( */}
+                        </div>
+                      </div>
+                    </td>
+                    <td className=" py-4 whitespace-nowrap text-right text-sm font-medium  flex gap-2">
+                      <Popup order={order} />
+                    </td>
+                    <td className=" py-4">
                       <>
-                        <div className="text-sm text-gray-900 flex ">name</div>
+                        <div className="text-sm text-gray-900  ">
+                          {`${order.date.split("T")[0]}`}{" "}
+                        </div>
                       </>
-                      {/* )}{" "} */}
-                    </div>
-                  </div>
-                </div>
-              </td>
-              <td className="px-6 py-4  ">
-                {/* {update && update === item._id ? (
-                    <div>
-                      <Textarea
-                        defaultValue={description}
-                        rows={4}
-                        placeholder="Write description here"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                      />
-                    </div>
-                  ) : ( */}
-                <>
-                  <div className="text-sm text-gray-900  ">description </div>
-                </>
-                {/* )} */}
-              </td>
-
-              <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium  flex gap-2">
-                {/* {update && update === item._id ? (
-                    <>
-                      <Button
-                        type="primary"
-                        ghost
-                        onClick={() => handleUpdateItem(item._id)}
-                      >
-                        Save
-                      </Button>
-                      <Button danger onClick={() => setUpdate("")}>
-                        Discard
-                      </Button>
-                    </>
-                  ) : ( */}
-                <>
-                  <span className="text-[20px] cursor-pointer">
-                    <FaRegEdit />
-                  </span>
-                  <span className="cursor-pointer text-[22px]">
-                    <MdOutlineDelete />
-                  </span>
-                </>
-                {/* )} */}
-              </td>
-            </tr>
-            {/* ))
-          ) : (s
-            <></>
-          )} */}
+                    </td>
+                    <td className="px-14 py-4 whitespace-nowrap text-right text-sm font-medium  flex gap-2">
+                      {order.totalPrice}
+                    </td>
+                  </>
+                </tr>
+              </>
+            ))}
           </tbody>
         </table>
       </div>
