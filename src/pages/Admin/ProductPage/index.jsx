@@ -9,7 +9,6 @@ export default function Category() {
   const [add, setAdd] = useState();
   useEffect(() => {
     getProducts();
-    console.log("add");
   }, [add, deleteItem]);
   const setIsAdd = (val) => {
     setAdd(val);

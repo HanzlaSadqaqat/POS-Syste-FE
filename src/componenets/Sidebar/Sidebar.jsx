@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 // import logo from '../../assets/images/logo-removebg-preview.png'
 import logo from "../../assets/images/logo.png";
 import { TbCategory } from "react-icons/tb";
 import { FaUnity } from "react-icons/fa6";
 import { RiUserAddLine } from "react-icons/ri";
 import { MdOutlineSpaceDashboard } from "react-icons/md";
+import { FiLogOut } from "react-icons/fi";
 
 import { Layout, Menu, theme } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loginSuccess } from "../../redux/reducers/slices/authSlice";
+import axios from "axios";
 const { Header, Content, Footer, Sider } = Layout;
 
 const items = [
@@ -22,7 +25,19 @@ const barElements = items.map((item, index) => ({
   label: item.text,
 }));
 const Sidebar = (props) => {
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    try {
+      dispatch(
+        loginSuccess({ isLogin: false, accessToken: "", role: "", email: "" })
+      );
+      localStorage.removeItem("accessToken");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Layout hasSider>
       <Sider
@@ -36,23 +51,41 @@ const Sidebar = (props) => {
         }}
         className=""
       >
-        <div className="demo-logo-vertical" />
-        <Header className="flex border border-blue-500 rounded-lg m-1 pl-0">
-          <img src={logo} alt="logo" />{" "}
-          <span className="text-white ">Admin Panel </span>{" "}
-        </Header>
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={["1"]}
-          onSelect={(e) => {
-            console.log(e.key - 1);
-            // navigate(items[e.key - 1].route);
-            props.onChangeTab(e.key);
-          }}
-          className="mt-5"
-          items={barElements}
-        />
+        <div className="flex flex-col justify-between h-full">
+          <div>
+            <div className="demo-logo-vertical" />
+            <Header className="flex border border-blue-500 rounded-lg m-1 pl-0">
+              <img src={logo} alt="logo" />{" "}
+              <span className="text-white ">Admin Panel </span>{" "}
+            </Header>
+            <Menu
+              theme="dark"
+              mode="inline"
+              defaultSelectedKeys={["1"]}
+              onSelect={(e) => {
+                // navigate(items[e.key - 1].route);
+                props.onChangeTab(e.key);
+              }}
+              className="mt-5"
+              items={barElements}
+            />
+          </div>
+          <Footer
+            style={{
+              backgroundColor: "transparent",
+              color: "white",
+            }}
+            className="flex gap-2 items-center cursor-pointer"
+          >
+            <div
+              onClick={handleLogout}
+              className="flex gap-2 items-center cursor-pointer p-2  rounded-xl hover:bg-white hover:bg-opacity-10 transition duration-300"
+            >
+              <FiLogOut className="text-[20px]" />
+              Logout
+            </div>
+          </Footer>
+        </div>
       </Sider>
       <Layout
         style={{

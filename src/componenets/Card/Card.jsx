@@ -30,7 +30,7 @@ export default function TopCard({
           {/* {icon} */}
 
           <div className="flex gap-1 items-center justify-between w-full pt-3 px-3">
-            <h4 className="text-small font-semibold leading-none text-[32px] flex gap-2 items-center">
+            <h4 className="font-semibold leading-none text-[32px] w-40  flex gap-2 items-center">
               {title}
             </h4>
             <h5 className=" tracking-tight w-full h-10  flex justify-end">

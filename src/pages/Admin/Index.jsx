@@ -10,7 +10,6 @@ export default function Pannel() {
   const componenet = [<Dashboard />, <Category />, <Product />, <User />];
   const handleChangeTab = (val) => {
     setChangeTab(val - 1);
-    console.log("tab", val);
   };
   return (
     <div>
