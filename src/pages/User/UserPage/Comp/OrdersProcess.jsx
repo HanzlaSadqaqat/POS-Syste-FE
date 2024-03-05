@@ -156,7 +156,7 @@ export default function OrdersProcess(props) {
       <div className="grid grid-row-2 grid-flow-col ">
         {/* PRODUCTS SECTION */}
         <div className=" PRODUCTS col-span-2  h-screen">
-          <div className="flex flex-col gap-3">
+          <div className="flex flex-col gap-3 h-full overflow-scroll">
             <Table
               color={"primary"}
               radius={"none"}
@@ -164,6 +164,10 @@ export default function OrdersProcess(props) {
               selectionMode="multiple"
               selectedKeys={selectId}
               onSelectionChange={(e) => setSelectId([...e])}
+              style={{
+                height: "100%",
+              }}
+              className="h-full border-2"
               // aria-label="Example static collection table"
             >
               <TableHeader>
@@ -187,6 +191,22 @@ export default function OrdersProcess(props) {
                 ))}
               </TableBody>
             </Table>
+            <span className="flex gap-2 justify-end mr-4">
+              <Button
+                className="bg-yellow-400  text-white font-bold h-14 flex justify-center items-center gap-1"
+                onClick={handleReset}
+              >
+                <BiReset />
+                Reset
+              </Button>
+              <Button
+                className="bg-blue-500 text-white font-bold h-14 flex justify-center items-center gap-1"
+                onClick={handleCreateOrder}
+              >
+                <IoIosAddCircleOutline className="font-bold" />
+                Create
+              </Button>
+            </span>
           </div>
         </div>
 
