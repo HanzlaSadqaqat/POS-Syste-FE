@@ -11,6 +11,7 @@ import {
 } from "@nextui-org/react";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { BiReset } from "react-icons/bi";
+import html2pdf from "html2pdf.js";
 
 import {
   Card,
@@ -23,6 +24,7 @@ import {
 } from "@nextui-org/react";
 import { Button } from "antd";
 import axios from "axios";
+import { FaRegFilePdf } from "react-icons/fa6";
 
 export default function OrdersProcess(props) {
   const [products, setProducts] = useState([]);
@@ -108,6 +110,7 @@ export default function OrdersProcess(props) {
 
     setSelectedItems(items);
   };
+  const handleGenerateBill = () => {};
 
   const handleCreateOrder = async () => {
     const finalItem = selectedItems.map((item) => {
@@ -144,6 +147,23 @@ export default function OrdersProcess(props) {
     }
   };
 
+  const generatePdf = () => {
+    try {
+      const element = document.getElementById("pdf");
+      const opt = {
+        margin: 0.5,
+        filename: `Bill.pdf`,
+        image: { type: "jpeg", quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: "in", format: "a4", orientation: "portrait" },
+      };
+
+      html2pdf().from(element).set(opt).save();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleReset = () => {
     setSelectedItems([]);
     setSelectId([]);
@@ -156,42 +176,44 @@ export default function OrdersProcess(props) {
       <div className="grid grid-row-2 grid-flow-col ">
         {/* PRODUCTS SECTION */}
         <div className=" PRODUCTS col-span-2  h-screen">
-          <div className="flex flex-col gap-3 h-full overflow-scroll">
-            <Table
-              color={"primary"}
-              radius={"none"}
-              disabledKeys={disableKey}
-              selectionMode="multiple"
-              selectedKeys={selectId}
-              onSelectionChange={(e) => setSelectId([...e])}
-              style={{
-                height: "100%",
-              }}
-              className="h-full border-2"
-              // aria-label="Example static collection table"
-            >
-              <TableHeader>
-                <TableColumn>NAME</TableColumn>
-                <TableColumn>PRICE</TableColumn>
-                <TableColumn>TOTAL STOCK</TableColumn>
-                <TableColumn>STATUS</TableColumn>
-              </TableHeader>
-              <TableBody>
-                {products.map((item) => (
-                  <TableRow key={item._id}>
-                    <TableCell>{item.name}</TableCell>
-                    <TableCell>$ {item.price}</TableCell>
-                    <TableCell>{item.quantity}</TableCell>
-                    <TableCell>
-                      <Chip>
-                        {item.quantity > 0 ? "Active" : "Out of Stock"}
-                      </Chip>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-            <span className="flex gap-2 justify-end mr-4">
+          <div className="flex flex-col gap-3 h-full ">
+            <div className=" overflow-scroll">
+              <Table
+                color={"primary"}
+                radius={"none"}
+                disabledKeys={disableKey}
+                selectionMode="multiple"
+                selectedKeys={selectId}
+                onSelectionChange={(e) => setSelectId([...e])}
+                style={{
+                  height: "100%",
+                }}
+                className="h-full border-2"
+                // aria-label="Example static collection table"
+              >
+                <TableHeader>
+                  <TableColumn>NAME</TableColumn>
+                  <TableColumn>PRICE</TableColumn>
+                  <TableColumn>TOTAL STOCK</TableColumn>
+                  <TableColumn>STATUS</TableColumn>
+                </TableHeader>
+                <TableBody style={{}}>
+                  {products.map((item) => (
+                    <TableRow key={item._id}>
+                      <TableCell>{item.name}</TableCell>
+                      <TableCell>$ {item.price}</TableCell>
+                      <TableCell>{item.quantity}</TableCell>
+                      <TableCell>
+                        <Chip>
+                          {item.quantity > 0 ? "Active" : "Out of Stock"}
+                        </Chip>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </div>
+            <span className="flex gap-2 justify-end pr-4 ">
               <Button
                 className="bg-yellow-400  text-white font-bold h-14 flex justify-center items-center gap-1"
                 onClick={handleReset}
@@ -211,80 +233,68 @@ export default function OrdersProcess(props) {
         </div>
 
         {/* CALCULATE ORDER SECTION */}
-        <div className="col-span-2 bg-yellow-100 h-full">
+        <div className="col-span-2 bg-yellow-100 h-full ">
           <div className=" h-full">
             <div className="h-full">
-              <Card className="rounded-none h-full">
+              <Card className="rounded-none h-full" id="pdf">
                 <CardHeader className="flex gap-3" radius="sm">
                   <div className="flex justify-between w-full items-center">
                     <p className="text-[32px]">Create Order</p>
                     <span className="flex gap-2">
                       <Button
-                        className="bg-yellow-400  text-white font-bold h-14 flex justify-center items-center gap-1"
-                        onClick={handleReset}
+                        onClick={generatePdf}
+                        className="flex p-3  text-[20px] h-12  w-fit justify-center"
                       >
-                        <BiReset />
-                        Reset
-                      </Button>
-                      <Button
-                        className="bg-blue-500 text-white font-bold h-14 flex justify-center items-center gap-1"
-                        onClick={handleCreateOrder}
-                      >
-                        <IoIosAddCircleOutline className="font-bold" />
-                        Create
-                      </Button>
+                        <FaRegFilePdf />
+                      </Button>{" "}
                     </span>
                   </div>
                 </CardHeader>
                 <Divider />
-                <CardBody className="" style={{ height: "" }}>
-                  <Table
-                    removeWrapper
-                    aria-label="Example static collection table"
-                  >
-                    <TableHeader>
-                      <TableColumn>Product</TableColumn>
-                      <TableColumn>Quantity</TableColumn>
-                      <TableColumn>Price</TableColumn>
-                    </TableHeader>
-                    <TableBody>
-                      {selectedItems.map((item, index) => (
-                        <TableRow key={item._id}>
-                          <TableCell>{item.name}</TableCell>
-                          <TableCell className="w-28">
-                            <Input
-                              type="number"
-                              placeholder="0"
-                              defaultValue={item.quantity}
-                              labelPlacement="outside"
-                              onChange={(e) =>
-                                handleQuantityChange(
-                                  item._id,
-                                  parseInt(e.target.value)
-                                )
-                              }
-                              startContent={
-                                <div className="pointer-events-none flex items-center"></div>
-                              }
-                            />
-                          </TableCell>
-                          <TableCell>{item.price * item.quantity}</TableCell>
-                        </TableRow>
-                      ))}
-                    </TableBody>
-                  </Table>
+                <CardBody className="h-1" style={{ height: "" }}>
+                  <div className="h-5/6">
+                    <Table
+                      removeWrapper
+                      aria-label="Example static collection table"
+                      className=""
+                    >
+                      <TableHeader>
+                        <TableColumn>Product</TableColumn>
+                        <TableColumn>Quantity</TableColumn>
+                        <TableColumn>Price</TableColumn>
+                      </TableHeader>
+                      <TableBody className="">
+                        {selectedItems.map((item, index) => (
+                          <TableRow key={item._id}>
+                            <TableCell>{item.name}</TableCell>
+                            <TableCell className="w-28">
+                              <Input
+                                type="number"
+                                placeholder="0"
+                                defaultValue={item.quantity}
+                                labelPlacement="outside"
+                                onChange={(e) =>
+                                  handleQuantityChange(
+                                    item._id,
+                                    parseInt(e.target.value)
+                                  )
+                                }
+                                startContent={
+                                  <div className="pointer-events-none flex items-center"></div>
+                                }
+                              />
+                            </TableCell>
+                            <TableCell>{item.price * item.quantity}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
                 </CardBody>
                 <Divider />
-                <CardFooter className="flex justify-between p-4 px-10 bg-gray-200 rounded-none  font-bold">
+                <CardFooter className="flex justify-between p-4 px-10 bg-gray-200 rounded-none  font-bold ">
                   <span className="text-[32px]">Total Bill</span>
                   <span className="text-[32px]">${total}</span>
-                  {/* <Link
-                    isExternal
-                    showAnchorIcon
-                    href="https://github.com/nextui-org/nextui"
-                  >
-                    Visit source code on GitHub.
-                  </Link> */}
                 </CardFooter>
               </Card>
             </div>

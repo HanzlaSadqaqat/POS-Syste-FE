@@ -18,6 +18,7 @@ const items = [
   { text: "Categories", icon: TbCategory, route: "/category" },
   { text: "Products", icon: FaUnity, route: "/product" },
   { text: "Users", icon: RiUserAddLine, route: "/user" },
+  { text: "Order History", icon: MdOutlineSpaceDashboard, route: "/history" },
 ];
 const barElements = items.map((item, index) => ({
   key: String(index + 1),
