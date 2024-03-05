@@ -8,12 +8,12 @@ import axios from "axios";
 import DashboardTable from "./comp/DashboardTable";
 
 export default function Dashboard() {
-  const [changeTab, setChangeTab] = useState("1");
   const [orders, setOrders] = useState([]);
   const [todaySale, setTodaySale] = useState(0);
   const [todayOrders, setTodayOrders] = useState([]);
   const [previousDay, setPrviousDay] = useState({ sale: 0, order: 0 });
   const [currentPage, setCurrentPage] = useState("1");
+  const [totalOrders, setTotalOrders] = useState(0);
   const getCurrentpage = (val) => {
     setCurrentPage(val);
   };
@@ -23,7 +23,29 @@ export default function Dashboard() {
 
   useEffect(() => {
     getOrdersDetail();
+    CardsDetail();
   }, []);
+  const CardsDetail = async () => {
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      const response = await axios.get("/order/status", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      const data = response.data;
+      setTodayOrders(data.today.length);
+      const sale = data.today.reduce((acc, cur) => acc + cur.totalPrice, 0);
+      setTodaySale(`${sale}`);
+      setPrviousDay({
+        sale: data.preDay?.reduce((acc, cur) => acc + cur.totalPrice, 0),
+        order: data.preDay.length,
+      });
+      setTotalOrders(data.totalOrders);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const getOrdersDetail = async () => {
     try {
       const accessToken = localStorage.getItem("accessToken");
@@ -34,28 +56,28 @@ export default function Dashboard() {
       });
       const data = response.data.data;
 
-      const today = data.filter(
-        (item) =>
-          item.date.split("T")[0] === new Date().toISOString().split("T")[0]
-      );
-      const currentDate = new Date();
-
-      // Subtract one day from the current date
-      const previousDate = new Date(currentDate);
-      previousDate.setDate(currentDate.getDate() - 1);
-      const previousDateISOString = previousDate.toISOString().split("T")[0];
-
-      const yesterday = data.filter(
-        (item) => item.date.split("T")[0] === previousDateISOString
-      );
-      setPrviousDay({
-        sale: yesterday?.reduce((acc, cur) => acc + cur.totalPrice, 0),
-        order: yesterday.length,
-      });
-      setTodayOrders(today.length);
-      const sale = today.reduce((acc, cur) => acc + cur.totalPrice, 0);
-      setTodaySale(`${sale}`);
       setOrders(response.data);
+
+      // const today = data.filter(
+      //   (item) =>
+      //     item.date.split("T")[0] === new Date().toISOString().split("T")[0]
+      // );
+      // const currentDate = new Date();
+
+      // // Subtract one day from the current date
+      // const previousDate = new Date(currentDate);
+      // previousDate.setDate(currentDate.getDate() - 2);
+      // const yesterday = data.filter(
+      //   (item) =>
+      //     item.date.split("T")[0] === previousDate.toISOString().split("T")[0]
+      // );
+      // setPrviousDay({
+      //   sale: yesterday?.reduce((acc, cur) => acc + cur.totalPrice, 0),
+      //   order: yesterday.length,
+      // });
+      // setTodayOrders(today.length);
+      // const sale = today.reduce((acc, cur) => acc + cur.totalPrice, 0);
+      // setTodaySale(`${sale}`);
     } catch (error) {
       console.log(error);
     }
@@ -96,7 +118,7 @@ export default function Dashboard() {
             icon={
               <TbTruckDelivery className="text-white rounded-lg bg-[#ad7b96] p-2 text-[40px]" />
             }
-            title={"450"}
+            title={`${totalOrders}`}
             text={"Total Orders"}
             icon2={
               <TbClock24 className="text-[28px] bg-[#ad7b96] p-1 rounded-full" />
