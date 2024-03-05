@@ -1,3 +1,4 @@
+import { Select, SelectItem } from "@nextui-org/react";
 import { Button, Input } from "antd";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
@@ -12,10 +13,17 @@ export default function ProductTable(props) {
   const [price, setPrice] = useState("");
   const [description, setDescription] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [categories, setCategories] = useState([]);
+  const [selectCategory, setSelectCategory] = useState("");
 
   useEffect(() => {
+    console.log(props.product);
     setProducts(props.product);
+    getCategories();
   }, [props.product]);
+  useEffect(() => {
+    console.log(categories);
+  }, [categories]);
 
   const handleEdit = (item) => {
     setUpdateId(item._id);
@@ -45,13 +53,30 @@ export default function ProductTable(props) {
           description,
           price,
           quantity,
+          categoryId: selectCategory,
         },
         {
           headers: { Authorization: `Bearer ${accessToken}` },
         }
       );
+      console.log(response.data);
       setUpdateId("");
       props.setIsDeleted(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const getCategories = async () => {
+    try {
+      const accessToken = localStorage.getItem("accessToken");
+      const response = await axios.get("/category", {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      const data = response.data.data;
+      const ctg = data.map((ctg) => ctg.name);
+      setCategories(data.map((ctg) => ({ value: ctg._id, label: ctg.name })));
     } catch (error) {
       console.log(error);
     }
@@ -98,15 +123,28 @@ export default function ProductTable(props) {
                 <tr className=" hover:bg-gray-50">
                   <td className=" w-48 px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
-                      <div className="ml-4">
+                      <div className="">
                         {updateId && updateId === item._id ? (
                           <>
-                            <div>
+                            <div className="flex flex-col gap-2">
                               <Input
                                 defaultValue={name}
                                 onChange={(e) => setName(e.target.value)}
                                 value={name}
                               />
+                              <Select
+                                placeholder="Select Category"
+                                defaultSelectedKeys={[item.categoryId]}
+                                onChange={(e) =>
+                                  setSelectCategory(e.target.value)
+                                }
+                              >
+                                {categories.map((ctg) => (
+                                  <SelectItem key={ctg.value} value={ctg.value}>
+                                    {ctg.label}
+                                  </SelectItem>
+                                ))}
+                              </Select>
                             </div>
                           </>
                         ) : (
