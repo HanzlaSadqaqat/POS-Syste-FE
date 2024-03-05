@@ -21,8 +21,8 @@ import { message } from "antd";
 
 const selectRole = [
   {
-    label: "MANAGER",
-    value: "MANAGER",
+    label: "ADMIN",
+    value: "ADMIN",
   },
   {
     label: "USER",

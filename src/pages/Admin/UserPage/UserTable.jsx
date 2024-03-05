@@ -6,8 +6,8 @@ import { MdOutlineDelete } from "react-icons/md";
 
 const selectRole = [
   {
-    label: "MANAGER",
-    value: "MANAGER",
+    label: "ADMIN",
+    value: "ADMIN",
   },
   {
     label: "USER",
