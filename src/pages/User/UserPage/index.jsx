@@ -32,7 +32,6 @@ export default function HomePage() {
   return (
     <div>
       <div className="grid grid-row-2 grid-flow-col h-screen">
-        {/* <div className="col-span-1 bg-gray-200">Column 1</div> */}
         <div className="col-span-1 ">
           <UserSidebar
             body={<OrdersProcess categoryId={categoryId} />}
