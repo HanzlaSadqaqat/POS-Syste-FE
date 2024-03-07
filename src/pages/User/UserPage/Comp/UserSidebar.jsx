@@ -5,6 +5,8 @@ import { Layout, Menu } from "antd";
 import { TbLogout } from "react-icons/tb";
 import { useDispatch } from "react-redux";
 import { logout } from "../../../../redux/reducers/slices/authSlice";
+import ReportPage from "../../../Admin/ReportPage";
+
 const { Header, Content, Footer, Sider } = Layout;
 
 const UserSidebar = (props) => {
@@ -13,27 +15,17 @@ const UserSidebar = (props) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (selectedId) {
+    if (selectedId && selectedId !== "6") {
       props.getCategoryId(props.categories[selectedId.key - 1]._id);
     }
   }, [selectedId]);
+
   useEffect(() => {
-    let list = []
-    props.categories.map((item, index) => (
-      list.push(
-        {
-          key: String(index + 1),
-          label: item.name,
-        }
-      )
-    ))
-    list.push(
-      {
-        key: list.length + 1,
-        label: "Repors",
-      }
-    )
-    setCategories(list);
+    const propData = props.categories.map((item, index) => ({
+      key: String(index + 1),
+      label: item.name,
+    }));
+    setCategories([...propData, {key:String(6), label:"Reports"}]);
   }, [props.categories]);
 
   const handleLogout = () => {
@@ -66,7 +58,7 @@ const UserSidebar = (props) => {
         <Menu
           theme="dark"
           mode="inline"
-          onSelect={(info) => setSelectedId(info)}
+          onSelect={(info) => {if(info.key !== "6") {setSelectedId(info)} else props.getReport()}}
           style={{
             border: "3px",
             overflow: "hidden",
@@ -83,10 +75,19 @@ const UserSidebar = (props) => {
             width: "100%",
             left: 0,
             bottom: 10,
-            display: "flex",
+            display: "",
             justifyContent: "center",
           }}
         >
+          <span>
+            <span
+              onClick={props.getReport()}
+              className="flex text-[20px] w-fit hover:bg-white hover:bg-opacity-15 transition duration-300 cursor-pointer pl-3 p-2 rounded-full justify-center items-center gap-1 "
+            >
+              <TbLogout />
+              <span className="text-[16px]">Reports</span>
+            </span>
+          </span>
           <span
             onClick={handleLogout}
             className="flex text-[20px] w-fit hover:bg-white hover:bg-opacity-15 transition duration-300 cursor-pointer pl-3 p-2 rounded-full justify-center items-center gap-1 "
