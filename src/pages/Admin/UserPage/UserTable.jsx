@@ -115,7 +115,7 @@ export default function UserTable(props) {
                         ) : (
                           <>
                             <div className="text-sm font-medium text-gray-900 flex flex-col">
-                              {item.name}
+                              {item.lastName}
                             </div>
                           </>
                         )}

@@ -9,8 +9,8 @@ import {
   Chip,
   Input,
 } from "@nextui-org/react";
-import { IoIosAddCircleOutline } from "react-icons/io";
-import { BiReset } from "react-icons/bi";
+import { IoIosAddCircleOutline, IoIosCash } from "react-icons/io";
+import { BiReset, BiPin } from "react-icons/bi";
 import html2pdf from "html2pdf.js";
 
 import {
@@ -31,7 +31,7 @@ export default function OrdersProcess(props) {
   const [allProducts, setAllProducts] = useState([]);
   const [selectId, setSelectId] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
-  const [total, setTotal] = useState("0");
+  const [total, setTotal] = useState(null);
   const [disableKey, setDisableKey] = useState([]);
   useEffect(() => {
     getAllProducts();
@@ -106,16 +106,15 @@ export default function OrdersProcess(props) {
       }
       return item;
     });
-    console.log(items);
 
     setSelectedItems(items);
   };
   const handleGenerateBill = () => {};
 
-  const handleCreateOrder = async () => {
+  const handleCreateOrder = async (cash = true) => {
     const finalItem = selectedItems.map((item) => {
       const findItem = allProducts.find((ele) => ele._id === item._id);
-      console.log(findItem);
+      console.log(findItem,item)
       if (findItem.quantity < item.quantity) {
         alert(`${findItem.name} is only ${findItem.quantity} remains`);
         return;
@@ -125,6 +124,7 @@ export default function OrdersProcess(props) {
         name: item.name,
         price: item.price * item.quantity,
         quantity: item.quantity,
+        categoryId:findItem.categoryId
       };
     });
     try {
@@ -134,6 +134,7 @@ export default function OrdersProcess(props) {
         {
           totalPrice: total,
           orders: [...finalItem],
+          cash
         },
         {
           headers: {
@@ -167,7 +168,7 @@ export default function OrdersProcess(props) {
   const handleReset = () => {
     setSelectedItems([]);
     setSelectId([]);
-    setTotal([]);
+    setTotal(null);
     selectCategory();
   };
 
@@ -219,14 +220,21 @@ export default function OrdersProcess(props) {
                 onClick={handleReset}
               >
                 <BiReset />
-                Reset
+                ESC
               </Button>
               <Button
                 className="bg-blue-500 text-white font-bold h-14 flex justify-center items-center gap-1"
-                onClick={handleCreateOrder}
+                onClick={() => handleCreateOrder()}
               >
-                <IoIosAddCircleOutline className="font-bold" />
-                Create
+                <IoIosCash className="font-bold" />
+                CONTANT
+              </Button>
+              <Button
+                className="bg-blue-500 text-white font-bold h-14 flex justify-center items-center gap-1"
+                onClick={() => handleCreateOrder(false)}
+              >
+                <BiPin className="font-bold" />
+                PIN
               </Button>
             </span>
           </div>
@@ -284,7 +292,7 @@ export default function OrdersProcess(props) {
                                 }
                               />
                             </TableCell>
-                            <TableCell>{item.price * item.quantity}</TableCell>
+                            <TableCell>{(item.price * item.quantity).toFixed(2)}</TableCell>
                           </TableRow>
                         ))}
                       </TableBody>
@@ -294,7 +302,7 @@ export default function OrdersProcess(props) {
                 <Divider />
                 <CardFooter className="flex justify-between p-4 px-10 bg-gray-200 rounded-none  font-bold ">
                   <span className="text-[32px]">Total Bill</span>
-                  <span className="text-[32px]">${total}</span>
+                  <span className="text-[32px]">€{total? total.toFixed(2) : 0}</span>
                 </CardFooter>
               </Card>
             </div>

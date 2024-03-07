@@ -5,6 +5,7 @@ import Dashboard from "./Dashboard";
 import Category from "./CategoryPage";
 import User from "./UserPage";
 import OrderPage from "./OrderPage";
+import ReportPage from "./ReportPage";
 
 export default function Pannel() {
   const [changeTab, setChangeTab] = useState("0");
@@ -14,6 +15,7 @@ export default function Pannel() {
     <Product />,
     <User />,
     <OrderPage />,
+    <ReportPage />,
   ];
   const handleChangeTab = (val) => {
     setChangeTab(val - 1);

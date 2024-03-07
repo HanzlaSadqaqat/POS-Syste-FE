@@ -194,7 +194,7 @@ export default function ProductTable(props) {
                     ) : (
                       <>
                         <div className="text-sm text-gray-900  ">
-                          $ {item.price}
+                        € {item.price}
                         </div>
                       </>
                     )}

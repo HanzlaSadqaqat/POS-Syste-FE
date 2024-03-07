@@ -32,7 +32,8 @@ const selectRole = [
 
 export default function Popup(props) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [name, setName] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState();
@@ -50,7 +51,8 @@ export default function Popup(props) {
       const response = await axios.post(
         "/auth/user",
         {
-          name,
+          firstName,
+          lastName,
           email,
           password,
           role: role.anchorKey,
@@ -98,10 +100,17 @@ export default function Popup(props) {
                 <ModalBody>
                   <Input
                     autoFocus
-                    label="User Name"
+                    label="First Name"
                     placeholder="Enter Name"
                     variant="bordered"
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={(e) => setFirstName(e.target.value)}
+                  />
+                  <Input
+                    autoFocus
+                    label="Last Name"
+                    placeholder="Enter Name"
+                    variant="bordered"
+                    onChange={(e) => setLastName(e.target.value)}
                   />
                   <Input
                     autoFocus

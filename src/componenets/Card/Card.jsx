@@ -20,6 +20,7 @@ export default function TopCard({
   text,
   icon2,
   bottomText,
+  className
 }) {
   const [isFollowed, setIsFollowed] = React.useState(false);
 
@@ -30,10 +31,10 @@ export default function TopCard({
           {/* {icon} */}
 
           <div className="flex gap-1 items-center justify-between w-full pt-3 px-3">
-            <h4 className="font-semibold leading-none text-[32px] w-40  flex gap-2 items-center">
+            <h4 className={className?"font-semibold leading-none text-[32px] w-full  flex gap-2 items-center":"font-semibold leading-none text-[32px] w-40  flex gap-2 items-center"}>
               {title}
             </h4>
-            <h5 className=" tracking-tight w-full h-10  flex justify-end">
+            <h5 className={icon ? "tracking-tight w-full h-10  flex justify-end" : " "}>
               {" "}
               {icon}
             </h5>

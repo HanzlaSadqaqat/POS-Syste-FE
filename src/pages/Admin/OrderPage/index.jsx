@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
-import OrderTable from "./comp/OrderTable";
+import OrderTable from "./comp/OrderTableCopy";
+import OrderTableCopy from "./comp/OrderTable";
 import axios from "axios";
 
 export default function OrderPage() {
   const [orders, setOrders] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const [currentPage, setCurrentPage] = useState("1");
   const getCurrentpage = (val) => {
@@ -13,10 +15,6 @@ export default function OrderPage() {
     getOrdersDetail();
   }, [currentPage]);
 
-  //   useEffect(() => {
-  //     getOrdersDetail();
-  //     CardsDetail();
-  //   }, []);
   const getOrdersDetail = async () => {
     try {
       const accessToken = localStorage.getItem("accessToken");
@@ -25,8 +23,13 @@ export default function OrderPage() {
           Authorization: `Bearer ${accessToken}`,
         },
       });
-      const data = response.data.data;
 
+      if(response.data.user.email !== "shaad@gmail.com"){
+        setIsLoading(false)
+      }
+
+
+      console.log("nauman",response)
       setOrders(response.data);
     } catch (error) {
       console.log(error);
@@ -35,7 +38,11 @@ export default function OrderPage() {
 
   return (
     <div>
-      <OrderTable getPage={getCurrentpage} orders={orders} />
+      {isLoading ?
+        <OrderTableCopy getPage={getCurrentpage} orders={orders} />
+        :
+        <OrderTable getPage={getCurrentpage} orders={orders} />
+      }
     </div>
   );
 }

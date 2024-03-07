@@ -18,12 +18,22 @@ const UserSidebar = (props) => {
     }
   }, [selectedId]);
   useEffect(() => {
-    setCategories(
-      props.categories.map((item, index) => ({
-        key: String(index + 1),
-        label: item.name,
-      }))
-    );
+    let list = []
+    props.categories.map((item, index) => (
+      list.push(
+        {
+          key: String(index + 1),
+          label: item.name,
+        }
+      )
+    ))
+    list.push(
+      {
+        key: list.length + 1,
+        label: "Repors",
+      }
+    )
+    setCategories(list);
   }, [props.categories]);
 
   const handleLogout = () => {
@@ -41,7 +51,6 @@ const UserSidebar = (props) => {
           left: 0,
           top: 0,
           bottom: 0,
-          // padding: 10,
           display: "flex",
           justifyContent: "center",
         }}
@@ -57,19 +66,15 @@ const UserSidebar = (props) => {
         <Menu
           theme="dark"
           mode="inline"
-          // defaultSelectedKeys={["1"]}
           onSelect={(info) => setSelectedId(info)}
           style={{
             border: "3px",
-
-            // height: "80%",
             overflow: "hidden",
           }}
           items={categories}
         />
         <Footer
           style={{
-            // height: "10%",
             backgroundColor: "transparent",
             color: "white",
             padding: 0,
