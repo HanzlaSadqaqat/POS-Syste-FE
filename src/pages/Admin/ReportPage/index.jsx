@@ -13,9 +13,10 @@ export default function Report() {
     console.log("accessToken",accessToken)
     const response = await axios.post(
       "/report",
+      {},
       {
         headers: {
-          Authorization: `Bearer ${accessToken}`,
+          authorization: `Bearer ${accessToken}`,
         },
       }
     );

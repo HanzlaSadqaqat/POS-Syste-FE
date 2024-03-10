@@ -4,23 +4,23 @@ import axios from "axios";
 import OrdersProcess from "./Comp/OrdersProcess";
 import ReportPage from "../../Admin/ReportPage";
 
-
 export default function HomePage() {
   const [categories, setCategories] = useState([]);
   const [categoryId, setCategoryId] = useState("");
   const [products, setProducts] = useState("");
-  const [getReports, setGetReports] = useState(false);
+  const [setReports, setSetReports] = useState(false);
   
   useEffect(() => {
     getCategories();
   }, []);
+
   const getCategoryId = (val) => {
     setCategoryId(val);
-    setGetReports(false)
+    setSetReports(false)
   };
 
   const getReport  = () => {
-    setGetReports(true)
+    setSetReports(true)
   }
 
   const getCategories = async () => {
@@ -41,9 +41,10 @@ export default function HomePage() {
   return (
     <div>
       <div className="grid grid-row-2 grid-flow-col h-screen">
+        {console.log("NAUMAN",setReports)}
         <div className="col-span-1 ">
           <UserSidebar
-            body={getReports? <ReportPage /> : <OrdersProcess categoryId={categoryId} />}
+            body={setReports? <ReportPage /> : <OrdersProcess categoryId={categoryId} />}
             categories={categories}
             getCategoryId={getCategoryId}
             getReport={getReport}

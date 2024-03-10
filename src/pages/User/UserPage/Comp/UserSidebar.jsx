@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import logo from "../../../../assets/images/logo.png";
 import { Layout, Menu } from "antd";
-import { TbLogout } from "react-icons/tb";
+import { TbLogout, TbReport } from "react-icons/tb";
 import { useDispatch } from "react-redux";
 import { logout } from "../../../../redux/reducers/slices/authSlice";
 import ReportPage from "../../../Admin/ReportPage";
@@ -25,7 +25,7 @@ const UserSidebar = (props) => {
       key: String(index + 1),
       label: item.name,
     }));
-    setCategories([...propData, {key:String(6), label:"Reports"}]);
+    setCategories([...propData]);
   }, [props.categories]);
 
   const handleLogout = () => {
@@ -81,10 +81,10 @@ const UserSidebar = (props) => {
         >
           <span>
             <span
-              onClick={props.getReport()}
+              onClick={() => props.getReport()}
               className="flex text-[20px] w-fit hover:bg-white hover:bg-opacity-15 transition duration-300 cursor-pointer pl-3 p-2 rounded-full justify-center items-center gap-1 "
             >
-              <TbLogout />
+              <TbReport />
               <span className="text-[16px]">Reports</span>
             </span>
           </span>
@@ -102,26 +102,16 @@ const UserSidebar = (props) => {
           marginLeft: 200,
         }}
       >
-        {/* <Header
-          style={{
-            padding: 0,
-            background: colorBgContainer,
-          }}
-        /> */}
+
         <Content
           style={{
-            // margin: "24px 16px ",
             overflow: "initial",
           }}
           className=""
         >
           {props.body}
         </Content>
-        {/* <Footer
-          style={{
-            textAlign: "center",
-          }}
-        ></Footer> */}
+      
       </Layout>
     </Layout>
   );
