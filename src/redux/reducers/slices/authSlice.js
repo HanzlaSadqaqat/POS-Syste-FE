@@ -16,7 +16,7 @@ const authSlice = createSlice({
       return {
         email: action.payload.email,
         isLogin: action.payload.isLogin,
-        accessToken: action.payload.accessToken2,
+        accessToken: action.payload.accessToken,
         role: action.payload.role,
       };
     },

@@ -18,12 +18,11 @@ const UserSidebar = (props) => {
     }
   }, [selectedId]);
   useEffect(() => {
-    setCategories(
-      props.categories.map((item, index) => ({
-        key: String(index + 1),
-        label: item.name,
-      }))
-    );
+    const propData = props.categories.map((item, index) => ({
+      key: String(index + 1),
+      label: item.name,
+    }));
+    setCategories([...propData, "here you can add more categories"]);
   }, [props.categories]);
 
   const handleLogout = () => {
@@ -41,7 +40,6 @@ const UserSidebar = (props) => {
           left: 0,
           top: 0,
           bottom: 0,
-          // padding: 10,
           display: "flex",
           justifyContent: "center",
         }}

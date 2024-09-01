@@ -13,6 +13,7 @@ const AppRouter = () => {
 
   return useRoutes(Routes({ isLogin: auth.isLogin, role: auth.role }));
 };
+
 function App() {
   const [loading, setLoading] = useState(true);
 

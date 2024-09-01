@@ -7,7 +7,6 @@ import Login from "../pages/LoginPage/Login";
 import HomePage from "../pages/User/UserPage";
 
 const Routes = (props) => {
-  console.log("props", props);
   if (props.isLogin) {
     if (props.role !== "USER") {
       return [
